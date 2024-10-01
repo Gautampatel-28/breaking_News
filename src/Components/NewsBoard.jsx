@@ -6,7 +6,7 @@ const NewsBoard = ({ category }) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const url = `https://newsapi.org/v2/top-headlines?country=us&category=${category}&apiKey=${import.meta.env.VITE_API_KEY}`;
+    const url = `/api/v2/top-headlines?country=us&category=${category}&apiKey=${import.meta.env.VITE_API_KEY}`;
     fetch(url)
       .then(response => {
         if (!response.ok) {
@@ -23,8 +23,6 @@ const NewsBoard = ({ category }) => {
       });
   }, [category]);
   
-  
-
   if (error) {
     return <div>Error: {error}</div>;
   }
@@ -40,7 +38,7 @@ const NewsBoard = ({ category }) => {
             key={index}
             title={news.title || 'No title available'}
             description={news.description || 'No description available'}
-            src={news.urlToImage || '/path/to/default/image.png'} // Adjust this to your default image path
+            src={news.urlToImage || '/path/to/default/image.png'}
             url={news.url}
           />
         ))
