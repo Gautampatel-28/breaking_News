@@ -10,16 +10,19 @@ const NewsBoard = ({ category }) => {
     fetch(url)
       .then(response => {
         if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+          return response.json().then(err => {
+            throw new Error(`HTTP error! status: ${response.status}, message: ${err.message}`);
+          });
         }
         return response.json();
       })
-      .then(data => setArticles(data.articles || [])) // Ensure articles is an array
+      .then(data => setArticles(data.articles || []))
       .catch(error => {
         console.error('Error fetching news:', error);
         setError('Failed to fetch news.');
       });
   }, [category]);
+  
   
 
   if (error) {
