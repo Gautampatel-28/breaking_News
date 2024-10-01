@@ -9,7 +9,7 @@ const NewsBoard = ({ category }) => {
     const url = `https://newsapi.org/v2/top-headlines?country=us&category=${category}&apiKey=${import.meta.env.VITE_API_KEY}`;
     fetch(url)
       .then(response => response.json())
-      .then(data => setArticles(data.articles))
+      .then(data => setArticles(data.articles || [])) // Ensure articles is an array
       .catch(error => {
         console.error('Error fetching news:', error);
         setError('Failed to fetch news.');
@@ -21,18 +21,17 @@ const NewsBoard = ({ category }) => {
   }
 
   return (
-    <>
     <div>
       <h2 className="text-center">
         Latest <span className="badge bg-danger">News</span>
       </h2>
-      {articles.length > 0 ? (
+      {articles.length ? (
         articles.map((news, index) => (
           <NewsItem
             key={index}
             title={news.title || 'No title available'}
             description={news.description || 'No description available'}
-            src={news.urlToImage || '/path/to/default/image.png'}  // Add a default image path
+            src={news.urlToImage || '/path/to/default/image.png'} // Adjust this to your default image path
             url={news.url}
           />
         ))
@@ -40,7 +39,6 @@ const NewsBoard = ({ category }) => {
         <div>Loading...</div>
       )}
     </div>
-    </>
   );
 };
 
