@@ -6,12 +6,16 @@ const NewsBoard = ({ category }) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const url = `/api/v2/top-headlines?country=us&category=${category}&apiKey=${import.meta.env.VITE_API_KEY}`;
+    const url = `https://newsapi.org/v2/top-headlines?country=us&category=${category}&apiKey=${import.meta.env.VITE_API_KEY}`;
+    
+    console.log("Fetching news from:", url); // Log the URL for debugging
+    
     fetch(url)
       .then(response => {
         if (!response.ok) {
-          return response.json().then(err => {
-            throw new Error(`HTTP error! status: ${response.status}, message: ${err.message}`);
+          return response.text().then(text => {
+            console.error('Error response:', text); // Log the HTML response
+            throw new Error(`HTTP error! status: ${response.status}`);
           });
         }
         return response.json();
@@ -22,7 +26,7 @@ const NewsBoard = ({ category }) => {
         setError('Failed to fetch news.');
       });
   }, [category]);
-  
+
   if (error) {
     return <div>Error: {error}</div>;
   }
@@ -38,7 +42,7 @@ const NewsBoard = ({ category }) => {
             key={index}
             title={news.title || 'No title available'}
             description={news.description || 'No description available'}
-            src={news.urlToImage || '/path/to/default/image.png'}
+            src={news.urlToImage || '/path/to/default/image.png'} // Adjust this to your default image path
             url={news.url}
           />
         ))
