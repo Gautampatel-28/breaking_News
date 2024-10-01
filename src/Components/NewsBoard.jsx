@@ -21,6 +21,7 @@ const NewsBoard = ({ category }) => {
   }
 
   return (
+    <>
     <div>
       <h2 className="text-center">
         Latest <span className="badge bg-danger">News</span>
@@ -29,9 +30,9 @@ const NewsBoard = ({ category }) => {
         articles.map((news, index) => (
           <NewsItem
             key={index}
-            title={news.title}
-            description={news.description}
-            src={news.urlToImage}
+            title={news.title || 'No title available'}
+            description={news.description || 'No description available'}
+            src={news.urlToImage || '/path/to/default/image.png'}  // Add a default image path
             url={news.url}
           />
         ))
@@ -39,6 +40,7 @@ const NewsBoard = ({ category }) => {
         <div>Loading...</div>
       )}
     </div>
+    </>
   );
 };
 
